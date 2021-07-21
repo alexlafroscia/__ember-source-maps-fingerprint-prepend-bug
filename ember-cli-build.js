@@ -13,6 +13,10 @@ module.exports = function (defaults) {
       enabled: true,
       extensions: ['js'],
     },
+
+    'ember-cli-terser': {
+      publicUrl: 'http://localhost:5000/',
+    },
   });
 
   // Use `app.import` to add additional libraries to the generated

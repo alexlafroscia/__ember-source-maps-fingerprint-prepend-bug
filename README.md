@@ -82,3 +82,13 @@ This path doesn't map to actual source files at all, but instead appears to refe
 On top of that, the `assets` segment of the URL is repeated; because the source map includes a relative path that begins `./assets`, but the source map itself lives within `/assets`, we end up looking up `./assets` relative to `/assets` which results in the confusing file path listed above.
 
 Thus, our source maps are entirely broken.
+
+### What about Terser?
+
+`ember-cli-terser` _also_ has it's own configuration option related to source maps and URLs. Setting this doesn't resolve the problem at all.
+
+It's unclear to me whether Terser is the source of the error, ultimately, or if it's unrelated to the problem described above.
+
+When building the app, I get a complaint from the Terser broccoli plugin related to an invalid file. For _some reason_ the source maps have a `file` key (which should point back to the "output" JS file to which this map corresponds) that references a non-existant file; the file name is theoretically correct but the hash is all wrong. I'm not sure where it gets that hash from, since none of the output files are labelled with it.
+
+![Console output of building the production Ember app](./readme-images/console-production-build.png)
