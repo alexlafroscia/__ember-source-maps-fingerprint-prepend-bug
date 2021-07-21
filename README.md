@@ -63,16 +63,22 @@ It's the source code for the 404 page provided by the `serve` command.
 
 Why are we looking at it?
 
-The source map is app wrong!
+The source map is all wrong!
 
 During Development, the `sources` key of the source map object is an array of all of the _actual_ source files on-disk, as it should be. However, during this production build, there's just a single file within the `sources` array:
+
+```
+assets/test-source-map-generation-d0f0f8bec113e346523ed883ec8def73.js
+```
+
+Which resolves, ultimately, to this full file path
 
 ```
 http://localhost:5000/assets/assets/test-source-map-generation-d0f0f8bec113e346523ed883ec8def73.js
 ```
 
-This path doesn't map to actual source files at all, but instead appears to reference the production JS file instead, which is not nearly as useful as referencing the input files as we would expect.
+This path doesn't map to actual source files at all, but instead appears to reference the _output_ JS file instead, which is not nearly as useful as referencing the input files as we would expect.
 
-On top of that, the `assets` segment of the URL is repeated; because it includes a relative path that begins `./assets`, but the source map itself lives within `/assets`, we end up looking up `./assets` relative to `/assets` and thus creating `/assets/assets` as the path to the file.
+On top of that, the `assets` segment of the URL is repeated; because the source map includes a relative path that begins `./assets`, but the source map itself lives within `/assets`, we end up looking up `./assets` relative to `/assets` which results in the confusing file path listed above.
 
 Thus, our source maps are entirely broken.
